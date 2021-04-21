@@ -50,7 +50,7 @@ class Polinomial:
 		if type(b) is Polinomial:return Division(self,b)
 		if type(b) is Division:return Division(b.divisor*self,b.dividend)
 		if type(b) is int or type(b) is float:return self*1/b
-	def eval(self,x):
+	def __call__(self,x):
 		res=0
 		if type(x) is Polinomial:res=Polinomial([0])
 		if type(x) is Division:res=Division(Polinomial([0]),Polinomial([1]))
@@ -87,8 +87,8 @@ class Division:
 		while self.dividend.coef[0]==0 and self.divisor.coef[0]==0:
 			self.dividend.downgrade()
 			self.divisor.downgrade()
-	def eval(self,x):
-		return self.dividend.eval(x)/self.divisor.eval(x)
+	def __call__(self,x):
+		return self.dividend(x)/self.divisor(x)
 	def __str__(self):
 		return "\\frac{"+str(self.dividend)+"}{"+str(self.divisor)+"}"
 
@@ -103,7 +103,7 @@ arr1=[]
 arr2=[]
 for i in range(1024):
 	arr1.append(sqrt(i))
-	arr2.append(a.eval(i))
+	arr2.append(a(i))
 
 plt.plot(arr1)
 plt.plot(arr2)
@@ -113,6 +113,6 @@ a=Polinomial([0,1])
 b=Polinomial([0,4,-4])
 
 for i in range(4):
-	a=b.eval(a)
+	a=b(a)
 
 print(a)
